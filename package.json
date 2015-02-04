@@ -1,0 +1,15 @@
+{
+  "name": "paradigm-load-handlebars-extras",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Chris Abrams <mail@chrisabrams.com>",
+  "license": "MIT",
+  "dependencies": {
+    "glob": "^4.3.5",
+    "paradigm-icons-partial-handlebars": "*"
+  }
+}
