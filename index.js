@@ -3,23 +3,26 @@ var fs    = require('fs'),
     icons = require('paradigm-icons-partial-handlebars'),
     path  = require('path')
 
-module.exports = (options) => {
+module.exports = function(options) {
 
-  var Handlebars   = options.Handlebars,
+  var assets       = (options.assets || false),
+      Handlebars   = options.Handlebars,
       helpersPath  = options.helpersPath,
       partialsPath = options.partialsPath
 
+  // Load helpers
   var helpers = glob.sync(helpersPath + '/**/*.js', {cwd: process.cwd()})
 
-  helpers.forEach( (helper) => {
+  helpers.forEach( function(helper) {
 
     require(path.join(process.cwd(), helper))(Handlebars)
 
   })
 
+  // Load partials
   var partials = glob.sync(partialsPath + '/**/*.hbs')
 
-  partials.forEach( (partial) => {
+  partials.forEach( function(partial) {
 
     var matches = partial.split('.hbs')
 
@@ -36,15 +39,22 @@ module.exports = (options) => {
 
   var partialLoaders = glob.sync(partialsPath + '/**/*.js')
 
-  partialLoaders.forEach( (partialLoader) => {
+  partialLoaders.forEach( function(partialLoader) {
 
     require(path.join(process.cwd(), partialLoader))(Handlebars)
 
   })
 
-  icons({
-    Handlebars: Handlebars,
-    path: './assets/icons/fontello.svg'
-  })
+  if(assets) {
+
+    // Load icons
+    var iconsPath = (options.assetsPath || './assets') + '/icons/fontello.svg'
+
+    icons({
+      Handlebars: Handlebars,
+      path: iconssPath
+    })
+
+  }
 
 }
