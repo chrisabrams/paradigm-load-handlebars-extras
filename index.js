@@ -6,16 +6,17 @@ var fs    = require('fs'),
 module.exports = function(options) {
 
   var assets       = (options.assets || false),
+      cwd          = options.cwd,
       Handlebars   = options.Handlebars,
       helpersPath  = options.helpersPath,
       partialsPath = options.partialsPath
 
   // Load helpers
-  var helpers = glob.sync(helpersPath + '/**/*.js', {cwd: process.cwd()})
+  var helpers = glob.sync(helpersPath + '/**/*.js', {cwd: cwd})
 
   helpers.forEach( function(helper) {
 
-    require(path.join(process.cwd(), helper))(Handlebars)
+    require(path.join(cwd, helper))(Handlebars)
 
   })
 
@@ -31,7 +32,7 @@ module.exports = function(options) {
     }
 
     var name = matches[0].replace(partialsPath + '/', '')
-    var template = fs.readFileSync(path.join(process.cwd(), partial), 'utf8')
+    var template = fs.readFileSync(path.join(cwd, partial), 'utf8')
 
     Handlebars.registerPartial(name, template)
 
@@ -41,20 +42,8 @@ module.exports = function(options) {
 
   partialLoaders.forEach( function(partialLoader) {
 
-    require(path.join(process.cwd(), partialLoader))(Handlebars)
+    require(path.join(cwd, partialLoader))(Handlebars)
 
   })
-
-  if(assets) {
-
-    // Load icons
-    var iconsPath = (options.assetsPath || './assets') + '/icons/fontello.svg'
-
-    icons({
-      Handlebars: Handlebars,
-      path: iconssPath
-    })
-
-  }
 
 }
